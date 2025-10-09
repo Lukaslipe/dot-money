@@ -1,0 +1,6 @@
+@DotMoney.API_HostAddress = http://localhost:5252
+
+GET {{DotMoney.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
