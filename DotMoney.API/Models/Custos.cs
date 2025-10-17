@@ -15,7 +15,7 @@ public class Custos
         public Categoria? Categoria { get; set; }
 
         // Relacionamento com Usuário
-        public int UsuariosId { get; set; }
+        public int UsuarioId { get; set; }
         public Usuarios? Usuario { get; set; }
 
         public DateTime DataRegistro { get; set; } = DateTime.Now;
