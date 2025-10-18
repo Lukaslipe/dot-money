@@ -10,6 +10,7 @@ builder.Services.AddDbContext<AppDataContext>();
 
 // Devemos ter uma linha dessa para cada Service criado
 builder.Services.AddScoped<CategoriaService>();
+builder.Services.AddScoped<CustosService>();
 
 builder.Services.AddControllers();
 

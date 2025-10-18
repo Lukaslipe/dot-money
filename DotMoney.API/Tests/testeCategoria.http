@@ -1,7 +1,7 @@
 ### Listar categorias
 GET http://localhost:5252/api/categorias/listar
 
-### Listar categorias filtrando por nome
+### Listar custos filtrando por nome
 GET http://localhost:5252/api/categorias/listar?nome=Sapato
 
 
