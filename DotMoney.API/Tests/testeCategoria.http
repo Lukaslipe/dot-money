@@ -1,0 +1,29 @@
+### Listar categorias
+GET http://localhost:5252/api/categorias/listar
+
+### Listar custos filtrando por nome
+GET http://localhost:5252/api/categorias/listar?nome=Sapato
+
+
+### Buscar categoria passando o ID
+GET http://localhost:5252/api/categorias/buscar?id=1
+
+### Castrar categoria
+POST http://localhost:5252/api/categorias/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Sapato"
+}
+
+### Editar categoria
+PATCH http://localhost:5252/api/categorias/editar?id=1
+Content-Type: application/json
+
+{
+  "nome": "Transporte"
+}
+
+
+### Remover categoria
+DELETE http://localhost:5252/api/categorias/remover?id=2
