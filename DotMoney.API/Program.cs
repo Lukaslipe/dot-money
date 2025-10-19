@@ -123,9 +123,43 @@ app.MapPatch("/api/categorias/editar", (int id, Categoria categoria, CategoriaSe
 
 app.MapDelete("/api/categorias/remover", async (int id, CategoriaService service, HttpContext ctx) =>
 {
+	var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+	var sucesso = await service.Deletar(id, usuarioId);
+	return sucesso ? Results.Ok("Categoria removida com sucesso.") : Results.NotFound("Categoria não encontrada.");
+}).RequireAuthorization();
+
+// --- CUSTOS ---
+app.MapGet("/api/custos/listar", (string? descricao, CustosService service) =>
+{
+    var list = service.Listar(descricao);
+    return Results.Ok(list);
+}).RequireAuthorization();
+
+app.MapGet("/api/custos/buscar", (int id, CustosService service) =>
+{
+    var item = service.BuscarPorId(id);
+    return item is null ? Results.NotFound("Custo não encontrado.") : Results.Ok(item);
+}).RequireAuthorization();
+
+app.MapPost("/api/custos/cadastrar", (Custos custo, CustosService service, HttpContext ctx) =>
+{
+    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var criado = service.Criar(custo, usuarioId);
+    return Results.Created($"/api/custos/buscar?id={criado.Id}", criado);
+}).RequireAuthorization();
+
+app.MapPatch("/api/custos/editar", (int id, Custos custo, CustosService service, HttpContext ctx) =>
+{
+    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var atualizado = service.Atualizar(id, custo, usuarioId);
+    return atualizado is null ? Results.NotFound("Custo não encontrado.") : Results.Ok(atualizado);
+}).RequireAuthorization();
+
+app.MapDelete("/api/custos/remover", async (int id, CustosService service, HttpContext ctx) =>
+{
     var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
     var sucesso = await service.Deletar(id, usuarioId);
-    return sucesso ? Results.Ok("Categoria removida com sucesso.") : Results.NotFound("Categoria não encontrada.");
+    return sucesso ? Results.Ok("Custo removido com sucesso.") : Results.NotFound("Custo não encontrado.");
 }).RequireAuthorization();
 
 app.Run();
