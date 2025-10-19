@@ -81,4 +81,17 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+// --- AUTH ---
+app.MapPost("/api/auth/register", async (RegistroDTO dto, IAuthService auth) =>
+{
+    var result = await auth.Registrar(dto);
+    return result is null ? Results.BadRequest(new { Message = "Usuário ou E-mail já cadastrado." }) : Results.Ok(result);
+});
+
+app.MapPost("/api/auth/login", async (LoginDTO dto, IAuthService auth) =>
+{
+    var result = await auth.Login(dto);
+    return result is null ? Results.Unauthorized() : Results.Ok(result);
+});
+
 app.Run();
