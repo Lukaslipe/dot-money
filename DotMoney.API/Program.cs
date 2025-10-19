@@ -19,6 +19,7 @@ builder.Services.AddScoped<CustosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
+builder.Services.AddScoped<LogService>();
 
 // === CONFIGURAÇÃO DO JWT ===
 var jwtSettings = builder.Configuration.GetSection("Jwt");
