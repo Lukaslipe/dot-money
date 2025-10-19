@@ -20,7 +20,7 @@ public class TokenService : ITokenService
         var claims = new[]
         {
             //Chave principal para identificar o usuário logado
-            new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+            new Claim("id", usuario.Id.ToString()),
             new Claim(ClaimTypes.Name, usuario.NomeDeUsuario),
             new Claim(ClaimTypes.Email, usuario.Email)
         };

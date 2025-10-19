@@ -1,19 +1,23 @@
 ### Listar Custos
 GET http://localhost:5252/api/custos/listar
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibXlsZW5hIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibXlsZW5hQGVtYWlsLmNvbSIsImV4cCI6MTc2MDg5NzQzNCwiaXNzIjoiRG90TW9uZXkuQVBJIiwiYXVkIjoiRG90TW9uZXkuQ2xpZW50In0.Bd750LyfULA6-XdQNB6FsRmIuk5v_NKZ1LC4aVGB-c0
 
 ### Listar custos filtrando por nome
-GET http://localhost:5252/api/custos/listar?descricao=teste
+GET http://localhost:5252/api/custos/listar?descricao=comida
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibXlsZW5hIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibXlsZW5hQGVtYWlsLmNvbSIsImV4cCI6MTc2MDg5NzQzNCwiaXNzIjoiRG90TW9uZXkuQVBJIiwiYXVkIjoiRG90TW9uZXkuQ2xpZW50In0.Bd750LyfULA6-XdQNB6FsRmIuk5v_NKZ1LC4aVGB-c0
 
 
 ### Buscar custo passando o ID
 GET http://localhost:5252/api/custos/buscar?id=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibXlsZW5hIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibXlsZW5hQGVtYWlsLmNvbSIsImV4cCI6MTc2MDg5NzQzNCwiaXNzIjoiRG90TW9uZXkuQVBJIiwiYXVkIjoiRG90TW9uZXkuQ2xpZW50In0.Bd750LyfULA6-XdQNB6FsRmIuk5v_NKZ1LC4aVGB-c0
 
 ### Castrar custo
 POST http://localhost:5252/api/custos/cadastrar
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibXlsZW5hIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibXlsZW5hQGVtYWlsLmNvbSIsImV4cCI6MTc2MDg5NzQzNCwiaXNzIjoiRG90TW9uZXkuQVBJIiwiYXVkIjoiRG90TW9uZXkuQ2xpZW50In0.Bd750LyfULA6-XdQNB6FsRmIuk5v_NKZ1LC4aVGB-c0
 
 {
-  "descricao": "teste",
+  "descricao": "hamburguer",
   "valor": 120.50,
   "data": "2025-10-18T00:00:00",
   "categoriaId": 1,
@@ -21,11 +25,12 @@ Content-Type: application/json
 }
 
 ### Editar custo
-PATCH http://localhost:5252/api/custos/editar?id=1
+PATCH http://localhost:5252/api/custos/editar?id=3
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibXlsZW5hIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibXlsZW5hQGVtYWlsLmNvbSIsImV4cCI6MTc2MDg5NzQzNCwiaXNzIjoiRG90TW9uZXkuQVBJIiwiYXVkIjoiRG90TW9uZXkuQ2xpZW50In0.Bd750LyfULA6-XdQNB6FsRmIuk5v_NKZ1LC4aVGB-c0
 
 {
-  "descricao": "Um novo custo",
+  "descricao": "comida",
   "valor": 120.50,
   "data": "2025-10-18T00:00:00",
   "categoriaId": 1,
@@ -34,4 +39,5 @@ Content-Type: application/json
 
 
 ### Remover custo
-DELETE http://localhost:5252/api/custos/remover?id=2
+DELETE http://localhost:5252/api/custos/remover?id=3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibXlsZW5hIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibXlsZW5hQGVtYWlsLmNvbSIsImV4cCI6MTc2MDg5NzQzNCwiaXNzIjoiRG90TW9uZXkuQVBJIiwiYXVkIjoiRG90TW9uZXkuQ2xpZW50In0.Bd750LyfULA6-XdQNB6FsRmIuk5v_NKZ1LC4aVGB-c0
