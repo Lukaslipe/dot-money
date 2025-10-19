@@ -94,4 +94,38 @@ app.MapPost("/api/auth/login", async (LoginDTO dto, IAuthService auth) =>
     return result is null ? Results.Unauthorized() : Results.Ok(result);
 });
 
+// --- CATEGORIAS ---
+app.MapGet("/api/categorias/listar", (string? nome, CategoriaService service) =>
+{
+    var categorias = service.Listar(nome);
+    return Results.Ok(categorias);
+}).RequireAuthorization();
+
+app.MapGet("/api/categorias/buscar", (int id, CategoriaService service) =>
+{
+    var cat = service.BuscarPorId(id);
+    return cat is null ? Results.NotFound("Categoria não encontrada.") : Results.Ok(cat);
+}).RequireAuthorization();
+
+app.MapPost("/api/categorias/cadastrar", async (Categoria categoria, CategoriaService service, HttpContext ctx) =>
+{
+    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var criada = await service.Criar(categoria, usuarioId);
+    return Results.Created($"/api/categorias/buscar?id={criada.CategoriaId}", criada);
+}).RequireAuthorization();
+
+app.MapPatch("/api/categorias/editar", (int id, Categoria categoria, CategoriaService service, HttpContext ctx) =>
+{
+    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var atualizada = service.Atualizar(id, categoria, usuarioId);
+    return atualizada is null ? Results.NotFound("Categoria não encontrada.") : Results.Ok(atualizada);
+}).RequireAuthorization();
+
+app.MapDelete("/api/categorias/remover", async (int id, CategoriaService service, HttpContext ctx) =>
+{
+    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var sucesso = await service.Deletar(id, usuarioId);
+    return sucesso ? Results.Ok("Categoria removida com sucesso.") : Results.NotFound("Categoria não encontrada.");
+}).RequireAuthorization();
+
 app.Run();
