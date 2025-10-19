@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,38 +44,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-// === SWAGGER ===
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotMoney API", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Bearer. Exemplo: 'Bearer {seu_token}'",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer"
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
-
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -85,13 +53,17 @@ app.UseAuthorization();
 app.MapPost("/api/auth/register", async (RegistroDTO dto, IAuthService auth) =>
 {
     var result = await auth.Registrar(dto);
-    return result is null ? Results.BadRequest(new { Message = "Usuário ou E-mail já cadastrado." }) : Results.Ok(result);
+    return result is null
+        ? Results.BadRequest(new { Message = "Usuário ou E-mail já cadastrado." })
+        : Results.Ok(result);
 });
 
 app.MapPost("/api/auth/login", async (LoginDTO dto, IAuthService auth) =>
 {
     var result = await auth.Login(dto);
-    return result is null ? Results.Unauthorized() : Results.Ok(result);
+    return result is null
+        ? Results.Unauthorized()
+        : Results.Ok(result);
 });
 
 // --- CATEGORIAS ---
@@ -104,7 +76,9 @@ app.MapGet("/api/categorias/listar", (string? nome, CategoriaService service) =>
 app.MapGet("/api/categorias/buscar", (int id, CategoriaService service) =>
 {
     var cat = service.BuscarPorId(id);
-    return cat is null ? Results.NotFound("Categoria não encontrada.") : Results.Ok(cat);
+    return cat is null
+        ? Results.NotFound("Categoria não encontrada.")
+        : Results.Ok(cat);
 }).RequireAuthorization();
 
 app.MapPost("/api/categorias/cadastrar", async (Categoria categoria, CategoriaService service, HttpContext ctx) =>
@@ -118,14 +92,18 @@ app.MapPatch("/api/categorias/editar", (int id, Categoria categoria, CategoriaSe
 {
     var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
     var atualizada = service.Atualizar(id, categoria, usuarioId);
-    return atualizada is null ? Results.NotFound("Categoria não encontrada.") : Results.Ok(atualizada);
+    return atualizada is null
+        ? Results.NotFound("Categoria não encontrada.")
+        : Results.Ok(atualizada);
 }).RequireAuthorization();
 
 app.MapDelete("/api/categorias/remover", async (int id, CategoriaService service, HttpContext ctx) =>
 {
-	var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
-	var sucesso = await service.Deletar(id, usuarioId);
-	return sucesso ? Results.Ok("Categoria removida com sucesso.") : Results.NotFound("Categoria não encontrada.");
+    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var sucesso = await service.Deletar(id, usuarioId);
+    return sucesso
+        ? Results.Ok("Categoria removida com sucesso.")
+        : Results.NotFound("Categoria não encontrada.");
 }).RequireAuthorization();
 
 // --- CUSTOS ---
@@ -138,7 +116,9 @@ app.MapGet("/api/custos/listar", (string? descricao, CustosService service) =>
 app.MapGet("/api/custos/buscar", (int id, CustosService service) =>
 {
     var item = service.BuscarPorId(id);
-    return item is null ? Results.NotFound("Custo não encontrado.") : Results.Ok(item);
+    return item is null
+        ? Results.NotFound("Custo não encontrado.")
+        : Results.Ok(item);
 }).RequireAuthorization();
 
 app.MapPost("/api/custos/cadastrar", (Custos custo, CustosService service, HttpContext ctx) =>
@@ -152,14 +132,18 @@ app.MapPatch("/api/custos/editar", (int id, Custos custo, CustosService service,
 {
     var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
     var atualizado = service.Atualizar(id, custo, usuarioId);
-    return atualizado is null ? Results.NotFound("Custo não encontrado.") : Results.Ok(atualizado);
+    return atualizado is null
+        ? Results.NotFound("Custo não encontrado.")
+        : Results.Ok(atualizado);
 }).RequireAuthorization();
 
 app.MapDelete("/api/custos/remover", async (int id, CustosService service, HttpContext ctx) =>
 {
     var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
     var sucesso = await service.Deletar(id, usuarioId);
-    return sucesso ? Results.Ok("Custo removido com sucesso.") : Results.NotFound("Custo não encontrado.");
+    return sucesso
+        ? Results.Ok("Custo removido com sucesso.")
+        : Results.NotFound("Custo não encontrado.");
 }).RequireAuthorization();
 
 app.Run();
