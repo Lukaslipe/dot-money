@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using DotMoney.API.Models;
 using DotMoney.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotMoney.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/categorias")]
 public class CategoriasController : ControllerBase
