@@ -13,6 +13,6 @@ POST http://localhost:5252/api/auth/login
 Content-Type: application/json
 
 {
-  "nomeDeUsuario": "mylena",
+  "nomeDeUsuario": "lucas",
   "senha": "123456"
 }
