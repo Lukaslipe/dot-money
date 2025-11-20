@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@types/axios": "^0.9.36",
+    "axios": "^1.13.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.3.7"
+  }
+}
