@@ -1,0 +1,27 @@
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* espaço entre label e input */
+  width: 100%;
+}
+
+.inputLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color-dark, black);
+}
+
+.loginInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.loginInput:focus {
+  border-color: var(--primary-color, blue);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color, blue) 20%, transparent);
+}
