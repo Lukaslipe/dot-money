@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { costService } from "../../services/costService";
 import { categoryService } from "../../services/categoryService";
 import { Custo } from "../../models/Costs";
-import  Categoria  from "../../models/Categoria";
+import Categoria from "../../models/Categoria";
 
 interface Props {
   custoEdit?: Custo | null;
@@ -13,23 +13,29 @@ interface Props {
 export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [form, setForm] = useState<Custo>({
-    CategoriaId: 0,
-    Data: "",
-    Descricao: "",
-    UsuarioId: 1, // substituir quando tiver auth
-    Valor: 0,
+    categoriaId: 0,
+    data: "",
+    descricao: "",
+    usuarioId: 7,
+    valor: 0,
   });
 
   useEffect(() => {
     categoryService.getAll().then(setCategorias);
 
-    if (custoEdit) setForm(custoEdit);
+    if (custoEdit) {
+      setForm({
+        ...custoEdit,
+        data: custoEdit.data ? custoEdit.data.split("T")[0] : "",
+      });
+    }
   }, [custoEdit]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+
     setForm({
       ...form,
       [name]: name === "valor" || name === "categoriaId" ? Number(value) : value,
@@ -39,15 +45,26 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.Descricao || !form.Valor || !form.CategoriaId) return;
+    const body = {
+      ...form,
+      data: new Date(form.data + "T00:00:00").toISOString(), // garante formato válido
+    };
 
-    if (custoEdit?.id) {
-      await costService.update(custoEdit.id, form);
-    } else {
-      await costService.create(form);
+    console.log("📤 Enviando para o backend:", body);
+
+    try {
+      if (custoEdit && custoEdit.id) {
+        await costService.update(custoEdit.id, body);
+        alert("Custo atualizado!");
+      } else {
+        await costService.create(body);
+        alert("Custo cadastrado!");
+      }
+
+      onSave();
+    } catch (error) {
+      console.error("❌ Erro ao salvar:", error);
     }
-
-    onSave();
   };
 
   return (
@@ -57,7 +74,7 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
       <label>Categoria</label>
       <select
         name="categoriaId"
-        value={form.CategoriaId}
+        value={form.categoriaId}
         onChange={handleChange}
         required
       >
@@ -73,7 +90,7 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
       <input
         type="date"
         name="data"
-        value={form.Data}
+        value={form.data}
         onChange={handleChange}
         required
       />
@@ -82,7 +99,7 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
       <input
         type="text"
         name="descricao"
-        value={form.Descricao}
+        value={form.descricao}
         onChange={handleChange}
         required
       />
@@ -92,7 +109,7 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
         type="number"
         step="0.01"
         name="valor"
-        value={form.Valor}
+        value={form.valor}
         onChange={handleChange}
         required
       />
