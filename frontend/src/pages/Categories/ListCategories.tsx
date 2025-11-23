@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { categoryService } from "../../services/categoryService";
-import Categoria from "../../services/categoryService";
+import  Categoria from "../../models/Categoria"; 
 import CategoryForm from "./CategoryForm";
 
 function ListCategories() {
@@ -86,9 +86,9 @@ function ListCategories() {
                     </thead>
                     <tbody>
                         {categorias.map(categoria => (
-                            <tr key={categoria.categoriaId}>
-                                <td>{categoria.categoriaId}</td>
-                                <td>{categoria.nome}</td>
+                            <tr key={categoria.CategoriaId}>
+                                <td>{categoria.CategoriaId}</td>
+                                <td>{categoria.Nome}</td>
                                 <td>
                                     <button 
                                         onClick={() => editarCategoria(categoria)}
@@ -97,7 +97,7 @@ function ListCategories() {
                                         Editar
                                     </button>
                                     <button 
-                                        onClick={() => deletarCategoria(categoria.categoriaId!)}
+                                        onClick={() => deletarCategoria(categoria.CategoriaId!)}
                                         disabled={loading}
                                     >
                                         Deletar

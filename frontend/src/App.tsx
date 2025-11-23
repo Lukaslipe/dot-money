@@ -5,6 +5,7 @@ import { useAuth } from './hooks/useAuth';
 import Login from './pages/Login/Login'; 
 import Dashboard from './pages/Dashboard/Dashboard'; 
 import ListCategories from "./pages/Categories/ListCategories";
+import ListCosts from "./pages/Costs/ListCosts";
 
 
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
@@ -41,10 +42,17 @@ function App() {
                     path="/dashboard" 
                     element={<ProtectedRoute element={<Dashboard />} />} 
                 />
+                
                 {/* Categorias (PROTEGIDA) */}
                 <Route 
                     path="/categories" 
                     element={<ProtectedRoute element={<ListCategories />} />} 
+                />
+                
+                {/* Costs (PROTEGIDA) */}
+                <Route 
+                    path="/costs" 
+                    element={<ProtectedRoute element={<ListCosts/>} />} 
                 />
                 
                 {/* Rota Raiz ('/'): Redireciona para o Dashboard se logado, ou para Login */}
