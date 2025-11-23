@@ -35,6 +35,10 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             
             alert("Categoria cadastrada com sucesso!");
 
+            if (onCancel) {
+                onCancel();
+            }
+
         } catch(error) {
             console.log("Erro ao cadastrar categoria: " + error);
             alert("Erro ao cadastrar categoria!");
@@ -57,6 +61,10 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             console.log("Categoria atualizada:", resposta);
             alert("Categoria atualizada com sucesso!");
 
+            if (onCancel) {
+                onCancel();
+            }
+
         } catch(error) {
             console.log("Erro ao atualizar categoria: " + error);
             alert("Erro ao atualizar categoria!");
@@ -66,31 +74,33 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
     }
 
     return(
-        <div>
-            <h1>{categoriaEdicao ? "Editar" : "Cadastrar"} Categoria</h1>
+        <div className="categories-container">
+            <div className="form-container">
+                <h1>{categoriaEdicao ? "Editar" : "Cadastrar"} Categoria</h1>
 
-            <form onSubmit={submeterCategoria}>
-                <div>
-                    <label>Nome</label>
-                    <input 
-                        type="text" 
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <button type="submit" disabled={loading}>
-                        {loading ? "Salvando..." : (categoriaEdicao ? "Atualizar" : "Cadastrar")}
-                    </button>
-                    {onCancel && (
-                        <button type="button" onClick={onCancel} disabled={loading}>
-                            Cancelar
+                <form onSubmit={submeterCategoria}>
+                    <div className="form-group">
+                        <label>Nome</label>
+                        <input 
+                            type="text" 
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                            required
+                            disabled={loading}
+                        />
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="submit-btn" disabled={loading}>
+                            {loading ? "Salvando..." : (categoriaEdicao ? "Atualizar" : "Cadastrar")}
                         </button>
-                    )}
-                </div>
-            </form>
+                        {onCancel && (
+                            <button type="button" className="cancel-btn" onClick={onCancel} disabled={loading}>
+                                Cancelar
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
