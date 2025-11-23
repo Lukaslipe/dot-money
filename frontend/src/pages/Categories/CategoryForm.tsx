@@ -8,12 +8,12 @@ interface CategoryFormProps {
 }
 
 function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
-    const [nome, setNome] = useState(categoriaEdicao?.Nome || "");
+    const [nome, setNome] = useState(categoriaEdicao?.nome || "");
     const [loading, setLoading] = useState(false);
 
     function submeterCategoria(e: React.FormEvent) {
         e.preventDefault();
-        if (categoriaEdicao && categoriaEdicao.CategoriaId) {
+        if (categoriaEdicao && categoriaEdicao.categoriaId) {
             atualizarCategoriaAPI();
         } else {
             cadastrarCategoriaAPI();
@@ -24,7 +24,7 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
         setLoading(true);
         try {
             const categoria: Categoria = {
-                Nome: nome
+                nome: nome
             }
 
             const resposta = await categoryService.create(categoria);
@@ -35,6 +35,10 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             
             alert("Categoria cadastrada com sucesso!");
 
+            if (onCancel) {
+                onCancel();
+            }
+
         } catch(error) {
             console.log("Erro ao cadastrar categoria: " + error);
             alert("Erro ao cadastrar categoria!");
@@ -44,18 +48,22 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
     }
 
     async function atualizarCategoriaAPI() {
-        if (!categoriaEdicao?.CategoriaId) return;
+        if (!categoriaEdicao?.categoriaId) return;
         
         setLoading(true);
         try {
             const categoria: Categoria = {
-                CategoriaId: categoriaEdicao.CategoriaId,
-                Nome: nome
+                categoriaId: categoriaEdicao.categoriaId,
+                nome: nome
             }
 
-            const resposta = await categoryService.update(categoriaEdicao.CategoriaId, categoria);
+            const resposta = await categoryService.update(categoriaEdicao.categoriaId, categoria);
             console.log("Categoria atualizada:", resposta);
             alert("Categoria atualizada com sucesso!");
+
+            if (onCancel) {
+                onCancel();
+            }
 
         } catch(error) {
             console.log("Erro ao atualizar categoria: " + error);
@@ -66,31 +74,33 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
     }
 
     return(
-        <div>
-            <h1>{categoriaEdicao ? "Editar" : "Cadastrar"} Categoria</h1>
+        <div className="categories-container">
+            <div className="form-container">
+                <h1>{categoriaEdicao ? "Editar" : "Cadastrar"} Categoria</h1>
 
-            <form onSubmit={submeterCategoria}>
-                <div>
-                    <label>Nome</label>
-                    <input 
-                        type="text" 
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        required
-                        disabled={loading}
-                    />
-                </div>
-                <div>
-                    <button type="submit" disabled={loading}>
-                        {loading ? "Salvando..." : (categoriaEdicao ? "Atualizar" : "Cadastrar")}
-                    </button>
-                    {onCancel && (
-                        <button type="button" onClick={onCancel} disabled={loading}>
-                            Cancelar
+                <form onSubmit={submeterCategoria}>
+                    <div className="form-group">
+                        <label>Nome</label>
+                        <input 
+                            type="text" 
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                            required
+                            disabled={loading}
+                        />
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="submit-btn" disabled={loading}>
+                            {loading ? "Salvando..." : (categoriaEdicao ? "Atualizar" : "Cadastrar")}
                         </button>
-                    )}
-                </div>
-            </form>
+                        {onCancel && (
+                            <button type="button" className="cancel-btn" onClick={onCancel} disabled={loading}>
+                                Cancelar
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }

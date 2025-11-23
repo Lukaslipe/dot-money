@@ -7,7 +7,6 @@ import ListCategories from "./pages/Categories/ListCategories";
 import ListCosts from "./pages/Costs/ListCosts";
 import Register from './pages/Register/Register'; 
 
-
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
     const { usuario, loading } = useAuth(); 
 

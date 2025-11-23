@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { categoryService } from "../../services/categoryService";
 import  Categoria from "../../models/Categoria"; 
 import CategoryForm from "./CategoryForm";
+import "./categories.css";
 
 function ListCategories() {
     const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -66,17 +67,18 @@ function ListCategories() {
     }
 
     return(
-        <div>
-            <h1>Lista de Categorias</h1>
-            
-            <button onClick={novaCategoria} disabled={loading}>
-                Nova Categoria
-            </button>
+        <div className="categories-container">
+            <div className="categories-header">
+                <h1>Lista de Categorias</h1>
+                <button className="new-category-btn" onClick={novaCategoria} disabled={loading}>
+                    Nova Categoria
+                </button>
+            </div>
 
             {loading ? (
-                <p>Carregando categorias...</p>
+                <p className="loading-text">Carregando categorias...</p>
             ) : (
-                <table border={1}>
+                <table className="categories-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -86,18 +88,20 @@ function ListCategories() {
                     </thead>
                     <tbody>
                         {categorias.map(categoria => (
-                            <tr key={categoria.CategoriaId}>
-                                <td>{categoria.CategoriaId}</td>
-                                <td>{categoria.Nome}</td>
-                                <td>
+                            <tr key={categoria.categoriaId}>
+                                <td>{categoria.categoriaId}</td>
+                                <td>{categoria.nome}</td>
+                                <td className="actions-cell">
                                     <button 
+                                        className="action-btn edit-btn"
                                         onClick={() => editarCategoria(categoria)}
                                         disabled={loading}
                                     >
                                         Editar
                                     </button>
                                     <button 
-                                        onClick={() => deletarCategoria(categoria.CategoriaId!)}
+                                        className="action-btn delete-btn"
+                                        onClick={() => deletarCategoria(categoria.categoriaId!)}
                                         disabled={loading}
                                     >
                                         Deletar
@@ -110,7 +114,7 @@ function ListCategories() {
             )}
 
             {categorias.length === 0 && !loading && (
-                <p>Nenhuma categoria cadastrada.</p>
+                <p className="empty-state">Nenhuma categoria cadastrada.</p>
             )}
         </div>
     );
