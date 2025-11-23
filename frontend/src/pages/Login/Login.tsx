@@ -2,27 +2,21 @@
 import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// 1. Componentes Isolados (Corrigido o caminho de importação relativa)
-// A pasta 'Login' está dentro de 'pages'. 'components' está no mesmo nível de 'pages'.
-// Caminho correto: ../../components/Login/NomeDoComponente
 import LoginInput from '../../components/Login/LoginInput'; 
 import LoginButton from '../../components/Login/LoginButton'; 
 
-// 2. Dependências da Pessoa 1 (Assumindo os caminhos do projeto)
-// Caminho correto para 'hooks' e 'models' no nível 'src':
 import { useAuth } from '../../hooks/useAuth'; 
 import { LoginDTO } from '../../models/dtos'; 
-// Se você não tem uma pasta 'models', a importação pode ser de um nível diferente.
 
 const Login: React.FC = () => {
-  // Estados para dados e feedback (UX)
+
   const [nomeDeUsuario, setNomeDeUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
-  const { signIn } = useAuth(); // Integração com a lógica da Pessoa 1
+  const { signIn } = useAuth(); 
 
   // Função que lida com o envio do formulário
   const handleSubmit = async (e: FormEvent) => {
@@ -44,7 +38,6 @@ const Login: React.FC = () => {
       navigate('/dashboard'); 
     } catch (err: any) {
       // Exibe a mensagem de erro
-      // Utilizamos 'err.message' se a Pessoa 1 configurar a função signIn para lançar um erro com uma mensagem
       setError(err.message || 'Falha na autenticação. Verifique suas credenciais.');
     } finally {
       setLoading(false);
