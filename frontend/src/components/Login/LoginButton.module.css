@@ -1,0 +1,31 @@
+.loginButton {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+
+
+  background: var(--primary-color, blue);
+  color: var(--card-background, white); 
+
+  transition: opacity 0.2s ease, transform 0.15s ease;
+}
+
+.loginButton:hover {
+  /* No hover, usa a variável primária para escurecer (ou o fallback #0056b3 se color-mix falhar) */
+  background: color-mix(in srgb, var(--primary-color, blue) 90%, black) ;
+}
+
+.loginButton:active {
+  transform: scale(0.98);
+}
+
+.loginButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  /* Deveria usar uma variável aqui, como --disabled-color */
+  background: #a0aec0; 
+}
