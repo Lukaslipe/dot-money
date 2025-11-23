@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { categoryService } from "../../services/categoryService";
-import Categoria from "../../services/categoryService";
+import  Categoria from "../../models/Categoria"; 
 
 interface CategoryFormProps {
   onCancel?: () => void;
@@ -8,12 +8,12 @@ interface CategoryFormProps {
 }
 
 function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
-    const [nome, setNome] = useState(categoriaEdicao?.nome || "");
+    const [nome, setNome] = useState(categoriaEdicao?.Nome || "");
     const [loading, setLoading] = useState(false);
 
     function submeterCategoria(e: React.FormEvent) {
         e.preventDefault();
-        if (categoriaEdicao && categoriaEdicao.categoriaId) {
+        if (categoriaEdicao && categoriaEdicao.CategoriaId) {
             atualizarCategoriaAPI();
         } else {
             cadastrarCategoriaAPI();
@@ -24,7 +24,7 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
         setLoading(true);
         try {
             const categoria: Categoria = {
-                nome: nome
+                Nome: nome
             }
 
             const resposta = await categoryService.create(categoria);
@@ -44,16 +44,16 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
     }
 
     async function atualizarCategoriaAPI() {
-        if (!categoriaEdicao?.categoriaId) return;
+        if (!categoriaEdicao?.CategoriaId) return;
         
         setLoading(true);
         try {
             const categoria: Categoria = {
-                categoriaId: categoriaEdicao.categoriaId,
-                nome: nome
+                CategoriaId: categoriaEdicao.CategoriaId,
+                Nome: nome
             }
 
-            const resposta = await categoryService.update(categoriaEdicao.categoriaId, categoria);
+            const resposta = await categoryService.update(categoriaEdicao.CategoriaId, categoria);
             console.log("Categoria atualizada:", resposta);
             alert("Categoria atualizada com sucesso!");
 
