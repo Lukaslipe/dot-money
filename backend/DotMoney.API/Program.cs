@@ -19,6 +19,18 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped(typeof(IPasswordHasher<>), typeof(PasswordHasher<>));
 builder.Services.AddScoped<LogService>();
 
+// === CORS ===
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 // === JWT ===
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? throw new ArgumentNullException("Jwt:Key não está configurada."));
@@ -46,6 +58,7 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -71,7 +84,7 @@ app.MapGet("/api/categorias/listar", (string? nome, CategoriaService service) =>
 {
     var categorias = service.Listar(nome);
     return Results.Ok(categorias);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapGet("/api/categorias/buscar", (int id, CategoriaService service) =>
 {
@@ -79,32 +92,32 @@ app.MapGet("/api/categorias/buscar", (int id, CategoriaService service) =>
     return cat is null
         ? Results.NotFound("Categoria não encontrada.")
         : Results.Ok(cat);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapPost("/api/categorias/cadastrar", async (Categoria categoria, CategoriaService service, HttpContext ctx) =>
 {
-    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
-    var criada = await service.Criar(categoria, usuarioId);
+    //var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var criada = await service.Criar(categoria, 7);
     return Results.Created($"/api/categorias/buscar?id={criada.CategoriaId}", criada);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapPatch("/api/categorias/editar", (int id, Categoria categoria, CategoriaService service, HttpContext ctx) =>
 {
-    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
-    var atualizada = service.Atualizar(id, categoria, usuarioId);
+    //var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var atualizada = service.Atualizar(id, categoria, 7);
     return atualizada is null
         ? Results.NotFound("Categoria não encontrada.")
         : Results.Ok(atualizada);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapDelete("/api/categorias/remover", async (int id, CategoriaService service, HttpContext ctx) =>
 {
-    var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
-    var sucesso = await service.Deletar(id, usuarioId);
+    //var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
+    var sucesso = await service.Deletar(id, 7);
     return sucesso
         ? Results.Ok("Categoria removida com sucesso.")
         : Results.NotFound("Categoria não encontrada.");
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 // --- CUSTOS ---
 app.MapGet("/api/custos/listar", (string? descricao, CustosService service) =>
@@ -145,5 +158,5 @@ app.MapDelete("/api/custos/remover", async (int id, CustosService service, HttpC
         ? Results.Ok("Custo removido com sucesso.")
         : Results.NotFound("Custo não encontrado.");
 }).RequireAuthorization();
-
+app.UseCors("AllowFrontend");
 app.Run();
