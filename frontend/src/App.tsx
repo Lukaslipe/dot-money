@@ -34,7 +34,7 @@ function App() {
             {/* O Routes define as rotas disponíveis na aplicação */}
             <Routes>
                 
-                {/* Rota 1: Tela de Login (Acesso livre) */}
+                {/* Tela de Login (Acesso livre) */}
                 <Route path="/login" element={<Login />} />
                 
                 {/* NOVO: Rota 2: Tela de Registro (Acesso livre) */}
@@ -44,6 +44,11 @@ function App() {
                 <Route 
                     path="/dashboard" 
                     element={<ProtectedRoute element={<Dashboard />} />} 
+                />
+                {/* Categorias (PROTEGIDA) */}
+                <Route 
+                    path="/categories" 
+                    element={<ProtectedRoute element={<ListCategories />} />} 
                 />
                 
                 {/* Rota 4: Rota Raiz ('/'): Redireciona para o Dashboard se logado, ou para Login */}
