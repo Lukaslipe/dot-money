@@ -1,10 +1,9 @@
-// src/App.tsx
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth'; 
 import Login from './pages/Login/Login'; 
 import Dashboard from './pages/Dashboard/Dashboard'; 
-import ListCategories from "./pages/Categories/ListCategories";
+import Register from './pages/Register/Register'; 
 
 
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
@@ -14,21 +13,23 @@ const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
         return <div>Carregando aplicação...</div>; 
     }
     
-    // Se não houver usuário logado (usuario === null), redireciona para o Login
+    // Se não houver usuário logado, vai redireciona para o Login
     if (!usuario) {
         return <Navigate to="/login" replace />;
     }
     
-    // Se o usuário estiver logado, exibe o componente (Dashboard)
+    // Se o usuário estiver logado, exibe o Dashboard
     return element;
 };
 
+
+// 1 - Um componente SEMPRE deve começar com a primeira letra maiúscula
+// 2 - Todo componente DEVE ser uma função do JS
+// 3 - Todo deve retornar apenas UM elemento HTML
 function App() {
-    // NOVO: Usa o useAuth para decidir o redirecionamento da rota raiz ('/')
     const { usuario } = useAuth(); 
     
     return (
-        // Envolve a aplicação com o Router para habilitar a navegação
         <BrowserRouter>
             {/* O Routes define as rotas disponíveis na aplicação */}
             <Routes>
@@ -36,7 +37,10 @@ function App() {
                 {/* Tela de Login (Acesso livre) */}
                 <Route path="/login" element={<Login />} />
                 
-                {/* Dashboard (PROTEGIDA) */}
+                {/* NOVO: Rota 2: Tela de Registro (Acesso livre) */}
+                <Route path="/register" element={<Register />} />
+                
+                {/* 🚨 Rota 3: Dashboard (PROTEGIDA) */}
                 <Route 
                     path="/dashboard" 
                     element={<ProtectedRoute element={<Dashboard />} />} 
@@ -47,17 +51,16 @@ function App() {
                     element={<ProtectedRoute element={<ListCategories />} />} 
                 />
                 
-                {/* Rota Raiz ('/'): Redireciona para o Dashboard se logado, ou para Login */}
+                {/* Rota 4: Rota Raiz ('/'): Redireciona para o Dashboard se logado, ou para Login */}
                 <Route 
                     path="/" 
                     element={<Navigate to={usuario ? "/dashboard" : "/login"} replace />} 
                 />
                 
-                {/* 404 para URLs não encontradas */}
+                {/* Rota 5: 404 para URLs não encontradas */}
                 <Route path="*" element={<h1>404 | Página Não Encontrada</h1>} />
             </Routes>
         </BrowserRouter>
     );
 }
-
 export default App;
