@@ -1,0 +1,38 @@
+.sidebar {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  background: var(--sidebar-bg, #1e1e2f);
+  color: var(--sidebar-text, #ffffff);
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.navItem {
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: var(--sidebar-link-text, #e0e0e0);
+}
+
+.navItem:hover {
+  background: var(--sidebar-hover, rgba(255, 255, 255, 0.1));
+}
+
+.navItemActive {
+  background: var(--primary-color, blue);
+  color: var(--sidebar-active-text, #ffffff);
+}
