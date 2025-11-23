@@ -139,7 +139,7 @@ app.MapPost("/api/custos/cadastrar", (Custos custo, CustosService service, HttpC
     var usuarioId = int.Parse(ctx.User.FindFirst("id")!.Value);
     var criado = service.Criar(custo, usuarioId);
     return Results.Created($"/api/custos/buscar?id={criado.Id}", criado);
-}).RequireAuthorization();
+});//.RequireAuthorization();
 
 app.MapPatch("/api/custos/editar", (int id, Custos custo, CustosService service, HttpContext ctx) =>
 {

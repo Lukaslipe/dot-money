@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { costService } from "../../services/costService";
 import { categoryService } from "../../services/categoryService";
-import CostForm from "./CostForm";
 import { Custo } from "../../models/Costs";
-import  Categoria from "../../models/Categoria";
+import Categoria from "../../models/Categoria";
 
 export default function ListCosts() {
   const [custos, setCustos] = useState<Custo[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
-  const [editando, setEditando] = useState<Custo | null>(null);
 
   const [filtroCategoria, setFiltroCategoria] = useState<number | "">("");
   const [filtroData, setFiltroData] = useState("");
+
+  const navigate = useNavigate();
 
   const loadData = () => {
     costService.getAll().then(setCustos);
@@ -29,12 +30,12 @@ export default function ListCosts() {
 
   const custosFiltrados = custos.filter((c) => {
     return (
-      (!filtroCategoria || c.CategoriaId === filtroCategoria) &&
-      (!filtroData || c.Data.startsWith(filtroData))
+      (!filtroCategoria || c.categoriaId === filtroCategoria) &&
+      (!filtroData || c.data.startsWith(filtroData))
     );
   });
 
-  const total = custosFiltrados.reduce((soma, c) => soma + c.Valor, 0);
+  const total = custosFiltrados.reduce((soma, c) => soma + c.valor, 0);
 
   return (
     <div>
@@ -66,16 +67,7 @@ export default function ListCosts() {
 
       <h3>Total: R$ {total.toFixed(2)}</h3>
 
-      {editando && (
-        <CostForm
-          custoEdit={editando}
-          onSave={() => {
-            setEditando(null);
-            loadData();
-          }}
-          onCancel={() => setEditando(null)}
-        />
-      )}
+      <button onClick={() => navigate("/costs/new")}>Novo Custo</button>
 
       <table>
         <thead>
@@ -90,12 +82,16 @@ export default function ListCosts() {
         <tbody>
           {custosFiltrados.map((c) => (
             <tr key={c.id}>
-              <td>{new Date(c.Data).toLocaleDateString("pt-BR")}</td>
-              <td>{categorias.find((x) => x.categoriaId === c.CategoriaId)?.nome}</td>
-              <td>{c.Descricao}</td>
-              <td>R$ {c.Valor.toFixed(2)}</td>
+              <td>{new Date(c.data).toLocaleDateString("pt-BR")}</td>
               <td>
-                <button onClick={() => setEditando(c)}>Editar</button>
+                {categorias.find((x) => x.categoriaId === c.categoriaId)?.nome}
+              </td>
+              <td>{c.descricao}</td>
+              <td>R$ {c.valor.toFixed(2)}</td>
+              <td>
+                <button onClick={() => navigate(`/costs/${c.id}/edit`)}>
+                  Editar
+                </button>
                 <button onClick={() => remover(c.id!)}>Excluir</button>
               </td>
             </tr>

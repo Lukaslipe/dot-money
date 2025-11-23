@@ -1,75 +1,70 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './hooks/useAuth'; 
-import Login from './pages/Login/Login'; 
-import Dashboard from './pages/Dashboard/Dashboard'; 
+import { useAuth } from './hooks/useAuth';
+import Login from './pages/Login/Login';
+import Dashboard from './pages/Dashboard/Dashboard';
 import ListCategories from "./pages/Categories/ListCategories";
 import ListCosts from "./pages/Costs/ListCosts";
-import Register from './pages/Register/Register'; 
+import CreateCost from "./pages/Costs/CreateCost"; 
+import EditCost from "./pages/Costs/EditCost";
+import Register from './pages/Register/Register';
 
 const ProtectedRoute = ({ element }: { element: React.ReactElement }) => {
-    const { usuario, loading } = useAuth(); 
+    const { usuario, loading } = useAuth();
 
-    if (loading) {
-        return <div>Carregando aplicação...</div>; 
-    }
-    
-    // Se não houver usuário logado, vai redireciona para o Login
-    if (!usuario) {
-        return <Navigate to="/login" replace />;
-    }
-    
-    // Se o usuário estiver logado, exibe o Dashboard
-    return element;
+    if (loading) return <div>Carregando aplicação...</div>;
+
+    return usuario ? element : <Navigate to="/login" replace />;
 };
 
-
-// 1 - Um componente SEMPRE deve começar com a primeira letra maiúscula
-// 2 - Todo componente DEVE ser uma função do JS
-// 3 - Todo deve retornar apenas UM elemento HTML
 function App() {
-    const { usuario } = useAuth(); 
-    
+    const { usuario } = useAuth();
+
     return (
         <BrowserRouter>
-            {/* O Routes define as rotas disponíveis na aplicação */}
             <Routes>
-                
-                {/* Tela de Login (Acesso livre) */}
+
+                {/* Rotas públicas */}
                 <Route path="/login" element={<Login />} />
-                
-                {/* NOVO: Rota 2: Tela de Registro (Acesso livre) */}
                 <Route path="/register" element={<Register />} />
-                
-                {/* 🚨 Rota 3: Dashboard (PROTEGIDA) */}
-                <Route 
-                    path="/dashboard" 
-                    element={<ProtectedRoute element={<Dashboard />} />} 
+
+                {/* Rotas protegidas */}
+                <Route
+                    path="/dashboard"
+                    element={<ProtectedRoute element={<Dashboard />} />}
                 />
-                
-                {/* Categorias (PROTEGIDA) */}
-                <Route 
-                    path="/categories" 
-                    element={<ProtectedRoute element={<ListCategories />} />} 
+
+                <Route
+                    path="/categories"
+                    element={<ProtectedRoute element={<ListCategories />} />}
                 />
-                
-                {/* Costs (PROTEGIDA) */}
-                <Route 
-                    path="/costs" 
-                    element={<ProtectedRoute element={<ListCosts/>} />} 
+
+                <Route
+                    path="/costs"
+                    element={<ProtectedRoute element={<ListCosts />} />}
                 />
-                
-                {/* Rota Raiz ('/'): Redireciona para o Dashboard se logado, ou para Login */}
-                {/* Rota 4: Rota Raiz ('/'): Redireciona para o Dashboard se logado, ou para Login */}
-                <Route 
-                    path="/" 
-                    element={<Navigate to={usuario ? "/dashboard" : "/login"} replace />} 
+
+                <Route
+                    path="/costs/new"
+                    element={<ProtectedRoute element={<CreateCost />} />}
                 />
-                
-                {/* Rota 5: 404 para URLs não encontradas */}
+
+                <Route
+                    path="/costs/:id/edit"
+                    element={<ProtectedRoute element={<EditCost />} />}
+                />
+
+                {/* Redirecionamento raiz */}
+                <Route
+                    path="/"
+                    element={<Navigate to={usuario ? "/dashboard" : "/login"} replace />}
+                />
+
+                {/* 404 */}
                 <Route path="*" element={<h1>404 | Página Não Encontrada</h1>} />
             </Routes>
         </BrowserRouter>
     );
 }
+
 export default App;
