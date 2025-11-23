@@ -22,7 +22,7 @@ export const categoryService = {
   // Criar categoria
   create: async (categoria: Categoria): Promise<Categoria> => {
     const resposta = await axios.post(`${API_URL}/categorias/cadastrar`, {
-      nome: categoria.Nome 
+      nome: categoria.nome 
     });
     return resposta.data as Categoria;
   },
@@ -31,7 +31,7 @@ export const categoryService = {
   update: async (id: number, categoria: Categoria): Promise<Categoria> => {
     const resposta = await axios.patch(
       `${API_URL}/categorias/editar`,
-      { nome: categoria.Nome },
+      { nome: categoria.nome },
       { params: { id } }
     );
     return resposta.data as Categoria;

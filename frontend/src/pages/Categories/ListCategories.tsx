@@ -88,10 +88,10 @@ function ListCategories() {
                     </thead>
                     <tbody>
                         {categorias.map(categoria => (
-                            <tr key={categoria.CategoriaId}>
-                                <td>{categoria.CategoriaId}</td>
-                                <td>{categoria.Nome}</td>
-                                <td>
+                            <tr key={categoria.categoriaId}>
+                                <td>{categoria.categoriaId}</td>
+                                <td>{categoria.nome}</td>
+                                <td className="actions-cell">
                                     <button 
                                         className="action-btn edit-btn"
                                         onClick={() => editarCategoria(categoria)}
@@ -100,7 +100,8 @@ function ListCategories() {
                                         Editar
                                     </button>
                                     <button 
-                                        onClick={() => deletarCategoria(categoria.CategoriaId!)}
+                                        className="action-btn delete-btn"
+                                        onClick={() => deletarCategoria(categoria.categoriaId!)}
                                         disabled={loading}
                                     >
                                         Deletar

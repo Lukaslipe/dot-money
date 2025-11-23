@@ -63,8 +63,8 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
       >
         <option value={0}>Selecione...</option>
         {categorias.map((c) => (
-          <option key={c.CategoriaId} value={c.CategoriaId}>
-            {c.Nome}
+          <option key={c.categoriaId} value={c.categoriaId}>
+            {c.nome}
           </option>
         ))}
       </select>

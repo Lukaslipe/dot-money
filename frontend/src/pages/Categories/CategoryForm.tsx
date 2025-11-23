@@ -8,12 +8,12 @@ interface CategoryFormProps {
 }
 
 function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
-    const [nome, setNome] = useState(categoriaEdicao?.Nome || "");
+    const [nome, setNome] = useState(categoriaEdicao?.nome || "");
     const [loading, setLoading] = useState(false);
 
     function submeterCategoria(e: React.FormEvent) {
         e.preventDefault();
-        if (categoriaEdicao && categoriaEdicao.CategoriaId) {
+        if (categoriaEdicao && categoriaEdicao.categoriaId) {
             atualizarCategoriaAPI();
         } else {
             cadastrarCategoriaAPI();
@@ -24,7 +24,7 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
         setLoading(true);
         try {
             const categoria: Categoria = {
-                Nome: nome
+                nome: nome
             }
 
             const resposta = await categoryService.create(categoria);
@@ -48,16 +48,16 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
     }
 
     async function atualizarCategoriaAPI() {
-        if (!categoriaEdicao?.CategoriaId) return;
+        if (!categoriaEdicao?.categoriaId) return;
         
         setLoading(true);
         try {
             const categoria: Categoria = {
-                CategoriaId: categoriaEdicao.CategoriaId,
-                Nome: nome
+                categoriaId: categoriaEdicao.categoriaId,
+                nome: nome
             }
 
-            const resposta = await categoryService.update(categoriaEdicao.CategoriaId, categoria);
+            const resposta = await categoryService.update(categoriaEdicao.categoriaId, categoria);
             console.log("Categoria atualizada:", resposta);
             alert("Categoria atualizada com sucesso!");
 

@@ -21,7 +21,7 @@ export default function ListCosts() {
   useEffect(() => loadData(), []);
 
   const remover = async (id: number) => {
-    if (confirm("Tem certeza?")) {
+    if (window.confirm("Tem certeza?")) {
       await costService.delete(id);
       loadData();
     }
@@ -50,8 +50,8 @@ export default function ListCosts() {
         >
           <option value="">Todas</option>
           {categorias.map((c) => (
-            <option key={c.CategoriaId} value={c.CategoriaId}>
-              {c.Nome}
+            <option key={c.categoriaId} value={c.categoriaId}>
+              {c.nome}
             </option>
           ))}
         </select>
@@ -91,7 +91,7 @@ export default function ListCosts() {
           {custosFiltrados.map((c) => (
             <tr key={c.id}>
               <td>{new Date(c.Data).toLocaleDateString("pt-BR")}</td>
-              <td>{categorias.find((x) => x.CategoriaId === c.CategoriaId)?.Nome}</td>
+              <td>{categorias.find((x) => x.categoriaId === c.CategoriaId)?.nome}</td>
               <td>{c.Descricao}</td>
               <td>R$ {c.Valor.toFixed(2)}</td>
               <td>
