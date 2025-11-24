@@ -28,6 +28,10 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             }
 
             const resposta = await categoryService.create(categoria);
+
+            if(!resposta){
+                console.log("Erro na criação de categoria")
+            }
             
             // Limpar formulário após cadastro
             setNome("");
@@ -56,6 +60,9 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             }
 
             const resposta = await categoryService.update(categoriaEdicao.categoriaId, categoria);
+            if(!resposta){
+                console.log("Erro na criação de categoria")
+            }
             alert("Categoria atualizada com sucesso!");
 
             if (onCancel) {

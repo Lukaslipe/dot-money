@@ -1,7 +1,6 @@
 import api from './api';
 import { LoginDTO, RegistroDTO, UsuarioRespostaDTO } from '../models/dtos';
 
-// REMOVA o /api no início, pois já está na BASE_URL
 const AUTH_LOGIN = '/auth/login';
 const AUTH_REGISTER = '/auth/register';
 

@@ -29,9 +29,7 @@ function ListCategories() {
 
     async function deletarCategoria(id: number) {
         const token = localStorage.getItem('dotmoney_token');
-        if (token) {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-        } else {
+        if (!token) {
             console.log('Token não encontrado no localStorage');
         }
         if (window.confirm("Tem certeza que deseja deletar esta categoria?")) {
