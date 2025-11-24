@@ -53,7 +53,7 @@ const Register: React.FC = () => {
     // Usa as classes globais definidas (login-container e login-card)
     <div className="login-container"> 
       <div className="login-card"> 
-        <h2>Criar Nova Conta 🔑</h2>
+        <h2>Criar Nova Conta</h2>
         
         <form onSubmit={handleSubmit} className="login-form">
           
