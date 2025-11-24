@@ -1,17 +1,16 @@
 import CostForm from "./CostForm";
 import { useNavigate } from "react-router-dom";
+import Layout from "../../components/Layout";
 
 export default function CreateCost() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1>Cadastrar Custo</h1>
-
+    <Layout title="Cadastrar Custo">
       <CostForm
-        onSave={() => navigate("/custos")} 
-        onCancel={() => navigate("/custos")}
+        onSave={() => navigate("/costs")} 
+        onCancel={() => navigate("/costs")}
       />
-    </div>
+    </Layout>
   );
 }

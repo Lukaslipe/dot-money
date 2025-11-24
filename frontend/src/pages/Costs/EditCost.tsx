@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { costService } from "../../services/costService";
 import { Custo } from "../../models/Costs";
 import CostForm from "./CostForm";
+import Layout from "../../components/Layout";
+import "./costs.css";
 
 export default function EditCost() {
   const { id } = useParams();
@@ -29,28 +31,29 @@ export default function EditCost() {
     load();
   }, [id, navigate]);
 
-  const handleSubmit = async (dados: Custo) => {
-    try {
-      await costService.update(Number(id), dados);
-      alert("Custo atualizado com sucesso!");
-      navigate("/costs");
-    } catch (err) {
-      console.error("Erro ao atualizar:", err);
-      alert("Erro ao atualizar o custo");
-    }
-  };
-
-  if (loading) return <h2>Carregando...</h2>;
-  if (!custo) return <h2>Custo não encontrado</h2>;
+  if (loading) return (
+    <Layout title="Editar Custo">
+      <div className="costs-container">
+        <div className="loading-text">Carregando...</div>
+      </div>
+    </Layout>
+  );
+  
+  if (!custo) return (
+    <Layout title="Editar Custo">
+      <div className="costs-container">
+        <div className="empty-state">Custo não encontrado</div>
+      </div>
+    </Layout>
+  );
 
   return (
-    <div>
-      <h1>Editar Custo</h1>
+    <Layout title="Editar Custo">
       <CostForm
         custoEdit={custo}
         onSave={() => navigate("/costs")}
         onCancel={() => navigate("/costs")}
-        />
-    </div>
+      />
+    </Layout>
   );
 }

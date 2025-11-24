@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { categoryService } from "../../services/categoryService";
-import  Categoria from "../../models/Categoria"; 
+import Categoria from "../../models/Categoria"; 
 import CategoryForm from "./CategoryForm";
+import Layout from "../../components/Layout";
 import "./categories.css";
 
 function ListCategories() {
@@ -59,64 +60,70 @@ function ListCategories() {
 
     if (mostrarForm) {
         return (
-            <CategoryForm 
-                onCancel={fecharForm}
-                categoriaEdicao={categoriaEdicao}
-            />
+            <Layout title={categoriaEdicao ? "Editar Categoria" : "Nova Categoria"}>
+                <div className="categories-container">
+                    <CategoryForm 
+                        onCancel={fecharForm}
+                        categoriaEdicao={categoriaEdicao}
+                    />
+                </div>
+            </Layout>
         );
     }
 
     return(
-        <div className="categories-container">
-            <div className="categories-header">
-                <h1>Lista de Categorias</h1>
-                <button className="new-category-btn" onClick={novaCategoria} disabled={loading}>
-                    Nova Categoria
-                </button>
-            </div>
+        <Layout title="Categorias"> {/* ⬅️ ENVOLVA COM LAYOUT */}
+            <div className="categories-container">
+                <div className="categories-header">
+                    <h1>Lista de Categorias</h1>
+                    <button className="new-category-btn" onClick={novaCategoria} disabled={loading}>
+                        Nova Categoria
+                    </button>
+                </div>
 
-            {loading ? (
-                <p className="loading-text">Carregando categorias...</p>
-            ) : (
-                <table className="categories-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {categorias.map(categoria => (
-                            <tr key={categoria.categoriaId}>
-                                <td>{categoria.categoriaId}</td>
-                                <td>{categoria.nome}</td>
-                                <td className="actions-cell">
-                                    <button 
-                                        className="action-btn edit-btn"
-                                        onClick={() => editarCategoria(categoria)}
-                                        disabled={loading}
-                                    >
-                                        Editar
-                                    </button>
-                                    <button 
-                                        className="action-btn delete-btn"
-                                        onClick={() => deletarCategoria(categoria.categoriaId!)}
-                                        disabled={loading}
-                                    >
-                                        Deletar
-                                    </button>
-                                </td>
+                {loading ? (
+                    <p className="loading-text">Carregando categorias...</p>
+                ) : (
+                    <table className="categories-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Ações</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {categorias.map(categoria => (
+                                <tr key={categoria.categoriaId}>
+                                    <td>{categoria.categoriaId}</td>
+                                    <td>{categoria.nome}</td>
+                                    <td className="actions-cell">
+                                        <button 
+                                            className="action-btn edit-btn"
+                                            onClick={() => editarCategoria(categoria)}
+                                            disabled={loading}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button 
+                                            className="action-btn delete-btn"
+                                            onClick={() => deletarCategoria(categoria.categoriaId!)}
+                                            disabled={loading}
+                                        >
+                                            Deletar
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
 
-            {categorias.length === 0 && !loading && (
-                <p className="empty-state">Nenhuma categoria cadastrada.</p>
-            )}
-        </div>
+                {categorias.length === 0 && !loading && (
+                    <p className="empty-state">Nenhuma categoria cadastrada.</p>
+                )}
+            </div>
+        </Layout>
     );
 }
 
