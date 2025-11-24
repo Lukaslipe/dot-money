@@ -1,78 +1,75 @@
-import React from 'react';
-import { useAuth } from '../../hooks/useAuth'; 
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import Layout from '../../components/Layout';
+import { costService } from '../../services/costService';
+import { categoryService } from '../../services/categoryService';
+import { Custo } from '../../models/Costs';
+import Categoria from '../../models/Categoria';
 import './dashboard.css';
 
 const Dashboard: React.FC = () => {
-    const { usuario, signOut } = useAuth(); 
-    const navigate = useNavigate();
+  const [custos, setCustos] = useState<Custo[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const handleLogout = () => {
-        signOut();
-        navigate('/login');
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [custosData, categoriasData] = await Promise.all([
+          costService.getAll(),
+          categoryService.getAll()
+        ]);
+        setCustos(custosData);
+        setCategorias(categoriasData);
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
+    loadData();
+  }, []);
+
+  // Calcula os totais
+  const totalCustosQuantidade = custos.length;
+  const totalCustosValor = custos.reduce((soma, custo) => soma + custo.valor, 0);
+  const totalCategorias = categorias.length;
+
+  if (loading) {
     return (
-        <div className="dashboard-container">
-            <div className="dashboard-layout">
-                
-                {/* Sidebar */}
-                <div className="dashboard-sidebar">
-                    <h2>DotMoney</h2>
-                    <nav className="sidebar-nav">
-                        <a href="/dashboard" className="sidebar-link">Dashboard</a>
-                        <a href="/costs" className="sidebar-link">Custos</a>
-                        <a href="/categories" className="sidebar-link">Categorias</a>
-                    </nav>
-                    
-                    {/* Botão de Logout na Sidebar */}
-                    <div className="sidebar-footer">
-                        <button className="logout-btn" onClick={handleLogout}>
-                            Sair
-                        </button>
-                    </div>
-                </div>
-
-                {/* Main Content */}
-                <div className="dashboard-main">
-                    
-                    {/* Header */}
-                    <div className="dashboard-header">
-                        <h1>Dashboard</h1>
-                        <div className="user-info">
-                            Olá, {usuario?.nomeDeUsuario || 'Usuário'}!
-                            <button className="logout-btn-header" onClick={handleLogout}>
-                                Sair
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Content Area */}
-                    <div className="dashboard-content">
-                        <div className="welcome-message">
-                            <h1>Bem-vindo(a), {usuario?.nomeDeUsuario || 'Usuário'}!</h1>
-                            <p>Aqui você verá o resumo das suas finanças.</p>
-                        </div>
-                        
-                        <section className="summary-grid">
-                            <div className="summary-card">
-                                <h3>Total de Custos</h3>
-                                <p>R$ 0,00</p>
-                            </div>
-                            <div className="summary-card">
-                                <h3>Lançamentos Recentes</h3>
-                                <p>0</p>
-                            </div>
-                            <div className="summary-card">
-                                <h3>Categorias</h3>
-                                <p>0</p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <Layout title="Dashboard">
+        <div className="loading-text">Carregando dados...</div>
+      </Layout>
     );
+  }
+
+  return (
+    <Layout title="Dashboard">
+      <div className="welcome-message">
+        <p>Resumo completo das suas finanças</p>
+      </div>
+      
+      <section className="summary-grid">
+        <div className="summary-card">
+          <h3>Total em Custos</h3>
+          <p>R$ {totalCustosValor.toFixed(2)}</p>
+          <small>Valor total gasto</small>
+        </div>
+        
+        <div className="summary-card">
+          <h3>Total de Custos</h3>
+          <p>{totalCustosQuantidade}</p>
+          <small>Lançamentos cadastrados</small>
+        </div>
+        
+        <div className="summary-card">
+          <h3>Categorias</h3>
+          <p>{totalCategorias}</p>
+          <small>Categorias cadastradas</small>
+        </div>
+      </section>
+    </Layout>
+  );
 };
 
 export default Dashboard;
