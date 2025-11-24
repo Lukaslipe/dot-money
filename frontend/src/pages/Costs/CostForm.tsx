@@ -3,6 +3,7 @@ import { costService } from "../../services/costService";
 import { categoryService } from "../../services/categoryService";
 import { Custo } from "../../models/Costs";
 import Categoria from "../../models/Categoria";
+import "./costs.css";
 
 interface Props {
   custoEdit?: Custo | null;
@@ -68,56 +69,73 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+  <div className="costs-container">
+    <div className="cost-form-container">
       <h2>{custoEdit ? "Editar Custo" : "Cadastrar Custo"}</h2>
 
-      <label>Categoria</label>
-      <select
-        name="categoriaId"
-        value={form.categoriaId}
-        onChange={handleChange}
-        required
-      >
-        <option value={0}>Selecione...</option>
-        {categorias.map((c) => (
-          <option key={c.categoriaId} value={c.categoriaId}>
-            {c.nome}
-          </option>
-        ))}
-      </select>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Categoria</label>
+          <select
+            name="categoriaId"
+            value={form.categoriaId}
+            onChange={handleChange}
+            required
+            className="form-select"
+          >
+            <option value={0}>Selecione...</option>
+            {categorias.map((c) => (
+              <option key={c.categoriaId} value={c.categoriaId}>
+                {c.nome}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <label>Data</label>
-      <input
-        type="date"
-        name="data"
-        value={form.data}
-        onChange={handleChange}
-        required
-      />
+        <div className="form-group">
+          <label>Data</label>
+          <input
+            type="date"
+            name="data"
+            value={form.data}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      <label>Descrição</label>
-      <input
-        type="text"
-        name="descricao"
-        value={form.descricao}
-        onChange={handleChange}
-        required
-      />
+        <div className="form-group">
+          <label>Descrição</label>
+          <input
+            type="text"
+            name="descricao"
+            value={form.descricao}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      <label>Valor (R$)</label>
-      <input
-        type="number"
-        step="0.01"
-        name="valor"
-        value={form.valor}
-        onChange={handleChange}
-        required
-      />
+        <div className="form-group">
+          <label>Valor (R$)</label>
+          <input
+            type="number"
+            step="0.01"
+            name="valor"
+            value={form.valor}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-      <button type="submit">Salvar</button>
-      <button type="button" onClick={onCancel}>
-        Cancelar
-      </button>
-    </form>
-  );
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            {custoEdit ? "Atualizar" : "Cadastrar"}
+          </button>
+          <button type="button" className="cancel-btn" onClick={onCancel}>
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+);
 }
