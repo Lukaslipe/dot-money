@@ -19,10 +19,8 @@ function ListCategories() {
         setLoading(true);
         try {
             const resposta = await categoryService.getAll();
-            console.log(resposta)
             setCategorias(resposta);
         } catch(error) {
-            console.log("Erro ao carregar categorias: " + error);
             alert("Erro ao carregar categorias!");
         } finally {
             setLoading(false);
@@ -33,17 +31,15 @@ function ListCategories() {
         const token = localStorage.getItem('dotmoney_token');
         if (token) {
             const payload = JSON.parse(atob(token.split('.')[1]));
-            console.log('Payload do token:', payload);
         } else {
             console.log('Token não encontrado no localStorage');
-}
+        }
         if (window.confirm("Tem certeza que deseja deletar esta categoria?")) {
             try {
                 await categoryService.delete(id);
                 carregarCategorias(); // Recarregar a lista
                 alert("Categoria deletada com sucesso!");
             } catch(error) {
-                console.log("Erro ao deletar categoria: " + error);
                 alert("Erro ao deletar categoria!");
             }
         }

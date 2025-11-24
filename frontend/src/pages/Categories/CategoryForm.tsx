@@ -28,7 +28,6 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             }
 
             const resposta = await categoryService.create(categoria);
-            console.log("Categoria cadastrada:", resposta);
             
             // Limpar formulário após cadastro
             setNome("");
@@ -40,7 +39,6 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             }
 
         } catch(error) {
-            console.log("Erro ao cadastrar categoria: " + error);
             alert("Erro ao cadastrar categoria!");
         } finally {
             setLoading(false);
@@ -58,7 +56,6 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             }
 
             const resposta = await categoryService.update(categoriaEdicao.categoriaId, categoria);
-            console.log("Categoria atualizada:", resposta);
             alert("Categoria atualizada com sucesso!");
 
             if (onCancel) {
@@ -66,7 +63,6 @@ function CategoryForm({ onCancel, categoriaEdicao = null }: CategoryFormProps) {
             }
 
         } catch(error) {
-            console.log("Erro ao atualizar categoria: " + error);
             alert("Erro ao atualizar categoria!");
         } finally {
             setLoading(false);

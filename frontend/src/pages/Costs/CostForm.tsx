@@ -48,10 +48,8 @@ export default function CostForm({ custoEdit, onSave, onCancel }: Props) {
 
     const body = {
       ...form,
-      data: new Date(form.data + "T00:00:00").toISOString(), // garante formato válido
+      data: new Date(form.data + "T00:00:00").toISOString(),
     };
-
-    console.log("📤 Enviando para o backend:", body);
 
     try {
       if (custoEdit && custoEdit.id) {
